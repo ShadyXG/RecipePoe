@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RecipePoe.Models;
+using RecipePoe.Constants;
 public class Ingredient {  
     public string Name { get; set; }   
-    public int Quantity { get; set; }  
-    public string MeasurementUnit { get; set; }        
+    public int Quantity { get; set; }
+     
+    public string MeasurementUnit { get; set; }
     
-    
+    //Setting scale values to Default x1
+    public double scale = Scale.DEFAULT;
 
     public Ingredient(string Name , int Quantity , string MeasurementUnit) {
         this.Name = Name;
@@ -21,7 +24,9 @@ public class Ingredient {
     }
 
     public override string ToString() {
-        return Name + " "+ Quantity +MeasurementUnit + "";
+        return Name + " "+ (Quantity*scale) +MeasurementUnit + "";
     }
+
+   
 }
 

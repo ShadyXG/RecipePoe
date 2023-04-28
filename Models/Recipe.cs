@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RecipePoe.Models;
 namespace RecipePoe.Models;
+using RecipePoe.Constants;
 
 public class Recipe {
     
@@ -14,6 +15,10 @@ public class Recipe {
     public int NumberOfSteps {get;set;}
 
     public string[] Steps { get; set; }
+
+    //Setting scale values to Default x1
+    public double scale = Scale.DEFAULT;   
+
 
     public Recipe(string Name , int NumberOfIngredients ) {
 
