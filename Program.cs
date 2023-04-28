@@ -1,11 +1,12 @@
 ﻿namespace RecipePoe;
-using RecipePoe.Models;   
+using RecipePoe.Models;
+using RecipePoe.Constants;
 
 
 internal class Program {   
     private static RecipeManagerImpl main_menu;
     static void Main(string[] args) {
-        Console.WriteLine("Hello, World!");   
+        //Console.WriteLine("Hello, World!");     
         
         main_menu = new RecipeManagerImpl();   
 
@@ -22,6 +23,8 @@ interface RecipeManager {
     void UpscaleQuantities();
     void ResetValues();
     void RemoveRecipe();
+    void RestoreDefaultValues();
+    void ViewRecipe();
 }
 
 class RecipeManagerImpl : RecipeManager {
@@ -56,8 +59,6 @@ class RecipeManagerImpl : RecipeManager {
 
             AddAllSteps();
             
-
-
             
             //Done Loading Recipe.
             Console.WriteLine("Recipe Successfully Added");
@@ -120,7 +121,7 @@ class RecipeManagerImpl : RecipeManager {
     private void AddAllSteps() {   
 
         for(var x = 0; x< _currentRecipe.NumberOfSteps; x++) {
-            Console.WriteLine("Add Step" + x + 1 + ":");
+            Console.WriteLine("Add Step " + (x + 1) + ":");
             _currentRecipe.Steps[x] = AddStep();
         }
     }
@@ -144,16 +145,18 @@ class RecipeManagerImpl : RecipeManager {
 
         //Evaluate Users Choice   
         switch (choice) {
-            case "1": AddNewRecipe();break;
+            case "1": AddNewRecipe();break;  
             case "2": UpscaleQuantities(); break;   
             case "3": RemoveRecipe(); break;
+            case "4": ViewRecipe();
+                break;
         }
 
         
     }
 
     public void RemoveRecipe() {
-        throw new NotImplementedException();
+        _currentRecipe = null;
     }
 
     public void ResetValues() {
@@ -161,6 +164,47 @@ class RecipeManagerImpl : RecipeManager {
     }
 
     public void UpscaleQuantities() {
+        // User enters scale factor:  
+        Console.WriteLine("Enter new Scale Factor:");
+
+        var factors = new string[] {"1.Half Ingredients." ,
+            "2.Double Ingredients." ,
+            "2.Triple Ingredients." 
+        };
+
+        //User Chooses scale Factor for Ingredients.
+        foreach (var fact in factors)
+            Console.WriteLine(fact);
+
+        var choice = Console.ReadLine();
+
+        switch (choice) {
+            case "1": _currentRecipe.scale = Scale.HALF; break;
+            case "2":
+                _currentRecipe.scale = Scale.DOUBLE ;
+                break;
+            case "3":
+                _currentRecipe.scale = Scale.TRIPLE;
+                break;
+
+               
+        }
+        Console.WriteLine("Recipe Scaled Successfully.");
+        return;
+
+    }
+
+    public void RestoreDefaultValues() {
+        if (_currentRecipe != null)
+            _currentRecipe.scale = Scale.DEFAULT;
+        else
+            Console.WriteLine("Recipe Currently not Initialised.");
+
+        return;
+
+    }
+
+    public void ViewRecipe() {
         throw new NotImplementedException();
     }
 }
