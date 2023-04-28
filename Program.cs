@@ -23,7 +23,6 @@ interface RecipeManager {
     void UpscaleQuantities();
     void ResetValues();
     void RemoveRecipe();
-    void RestoreDefaultValues();
     void ViewRecipe();
 }
 
@@ -120,6 +119,7 @@ class RecipeManagerImpl : RecipeManager {
 
     private void AddAllSteps() {   
 
+        // Adding all Steps of Recipe
         for(var x = 0; x< _currentRecipe.NumberOfSteps; x++) {
             Console.WriteLine("Add Step " + (x + 1) + ":");
             _currentRecipe.Steps[x] = AddStep();
@@ -128,12 +128,14 @@ class RecipeManagerImpl : RecipeManager {
 
     public void Menu() {
 
-        Console.WriteLine("\tMain Menu.\t");
+        Console.WriteLine("\t\t--Main Menu.--\t");
         //Possible Menu Selections 
         var menu_selection = new string[] {   
             "1.Add new Recipe", 
             "2.Upscale Quantities.",  
-            "3.Remove Current Recipe", 
+            "3.Remove Current Recipe",   
+            "4.View Current Recipe",   
+            "5.Restore x1 Scale"
         };
 
         //Printout menu Selections
@@ -148,8 +150,10 @@ class RecipeManagerImpl : RecipeManager {
             case "1": AddNewRecipe();break;  
             case "2": UpscaleQuantities(); break;   
             case "3": RemoveRecipe(); break;
-            case "4": ViewRecipe();
-                break;
+            case "4": ViewRecipe(); break;
+            case "5": ResetValues(); break;
+
+            default: return; 
         }
 
         
@@ -157,55 +161,109 @@ class RecipeManagerImpl : RecipeManager {
 
     public void RemoveRecipe() {
         _currentRecipe = null;
+        Console.WriteLine("\nCurrent Recipe Removed. Create Another");
     }
+
+    /*
+     * Reset Scale to Original Value*
+     */
 
     public void ResetValues() {
-        throw new NotImplementedException();
+        if (_currentRecipe != null) {
+
+            foreach (var item in _currentRecipe.Ingredients)
+                item.scale = Scale.DEFAULT;
+        }
+
+        else
+            Console.WriteLine("\nRecipe Currently not Initialised.");
+
+        return;
     }
+    /*
+     *Makes Ingredients scaled
+    */
 
     public void UpscaleQuantities() {
-        // User enters scale factor:  
-        Console.WriteLine("Enter new Scale Factor:");
 
-        var factors = new string[] {"1.Half Ingredients." ,
+        if (_currentRecipe != null) {
+
+            // User enters scale factor:  
+            Console.WriteLine("Enter new Scale Factor:");
+
+            var factors = new string[] {"1.Half Ingredients." ,
             "2.Double Ingredients." ,
-            "2.Triple Ingredients." 
+            "3.Triple Ingredients."
         };
 
-        //User Chooses scale Factor for Ingredients.
-        foreach (var fact in factors)
-            Console.WriteLine(fact);
+            //User Chooses scale Factor for Ingredients.
+            foreach (var fact in factors)
+                Console.WriteLine(fact);
 
-        var choice = Console.ReadLine();
+            var choice = Console.ReadLine();
 
-        switch (choice) {
-            case "1": _currentRecipe.scale = Scale.HALF; break;
-            case "2":
-                _currentRecipe.scale = Scale.DOUBLE ;
-                break;
-            case "3":
-                _currentRecipe.scale = Scale.TRIPLE;
-                break;
+            switch (choice) {
+                case "1":
+                    _currentRecipe.scale = Scale.HALF;
+                    UpdateScaleInIngredient(_currentRecipe.scale);
+                    break;
+                case "2":
+                    _currentRecipe.scale = Scale.DOUBLE;
+                    UpdateScaleInIngredient(_currentRecipe.scale);
+                    break;
+                case "3":
+                    _currentRecipe.scale = Scale.TRIPLE;
+                    UpdateScaleInIngredient(_currentRecipe.scale);
+                    break;
 
-               
+                default: return;
+
+            }
+            Console.WriteLine("\nRecipe Scaled Successfully.");
+            return;
+
         }
-        Console.WriteLine("Recipe Scaled Successfully.");
-        return;
+        else {
+            Console.WriteLine("\nRecipe Currently not Initialised!");
+        }
+        
 
     }
 
-    public void RestoreDefaultValues() {
-        if (_currentRecipe != null)
-            _currentRecipe.scale = Scale.DEFAULT;
-        else
-            Console.WriteLine("Recipe Currently not Initialised.");
-
-        return;
-
-    }
+  
 
     public void ViewRecipe() {
-        throw new NotImplementedException();
+        //Pretty Print Recipe Details
+        if (_currentRecipe != null) {
+
+            // Quantities
+            Console.WriteLine("\t--Current Recipe: " + _currentRecipe.Name);
+            foreach (var item in _currentRecipe.Ingredients) {
+                Console.WriteLine("\t" + item.ToString());
+            }
+            //Steps   
+            Console.WriteLine("\t--Steps");
+            foreach(var step in _currentRecipe.Steps)
+                Console.WriteLine("\t" + step);
+        }
+        else {
+            Console.WriteLine("\nNo Recipe Initialised!!!");
+        }
+            
+    }
+
+    public void UpdateScaleInIngredient(double new_scale) {
+
+        // Update Individual Scale values
+        if (_currentRecipe != null) {
+            foreach (var item in _currentRecipe.Ingredients)
+                item.scale = new_scale;
+        }
+        else {
+            Console.WriteLine("Recipe is Not Initialised.");
+            return;
+        }
+       
     }
 }
 

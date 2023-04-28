@@ -24,7 +24,7 @@ public class Ingredient {
     }
 
     public override string ToString() {
-        return Name + " "+ (Quantity*scale) +MeasurementUnit + "";
+        return Name + " "+ (this.Quantity * scale) +MeasurementUnit + "";
     }
 
    
