@@ -247,7 +247,7 @@ class RecipeManagerImpl : RecipeManager {
                 Console.WriteLine("\t" + step);
         }
         else {
-            Console.WriteLine("\nNo Recipe Initialised!!!");
+            Console.WriteLine("\nNo RecipesAnd  Initialised!!!");
         }
             
     }

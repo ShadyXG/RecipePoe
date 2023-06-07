@@ -10,8 +10,9 @@ using RecipePoe.Constants;
 public class Recipe {
     
     public string Name {get; set; }
-    public int NumberOfIngredients {get; set; }
-    public Ingredient[] Ingredients;    
+    public int NumberOfIngredients {get; set; } 
+
+    public List<Ingredient> Ingredients;    
     public int NumberOfSteps {get;set;}
 
     public string[] Steps { get; set; }
@@ -28,10 +29,11 @@ public class Recipe {
 
     }
 
-    public void AddIngredients() {     
+    public void AddIngredients() {
 
         // Initialise ingredients Array
-        Ingredients = new Ingredient[NumberOfIngredients];           
+        // Ingredients = new Ingredient[NumberOfIngredients];
+        Ingredients = new List<Ingredient>();
     }
 
     public override string ToString() {
@@ -41,7 +43,9 @@ public class Recipe {
 
     public void InitialiseSteps() {
         //Init Steps  Array
-        Steps = new string[NumberOfSteps];
+        Steps = new string[NumberOfSteps];   
+
+
     }
 
 }

@@ -11,10 +11,16 @@ public class Ingredient {
     public string Name { get; set; }   
     public int Quantity { get; set; }
      
-    public string MeasurementUnit { get; set; }
+    public string MeasurementUnit { get; set; } 
     
     //Setting scale values to Default x1
     public double scale = Scale.DEFAULT;
+
+    //Add Calories to ingredient   
+    public double Calories;
+
+    // Add Food Group to Ingredient      
+    public string FoodGroup;
 
     public Ingredient(string Name , int Quantity , string MeasurementUnit) {
         this.Name = Name;
